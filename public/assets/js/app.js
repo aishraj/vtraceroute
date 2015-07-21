@@ -26,7 +26,7 @@ var App = React.createClass({
 });
 
 App.start = function () {
-    React.render(<App/>, document.getElementById('content'));
+    React.render(<App/>, document.body);
 };
 
 module.exports = window.App = App;
