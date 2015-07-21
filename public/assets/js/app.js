@@ -19,14 +19,14 @@ var App = React.createClass({
         <MapboxMap
           mapId="mapbox.streets"
           zoomControl={true}
-          center={[59.907433, 30.299848]} zoom={17}/>
+          center={[27.7000, 85.3333]} zoom={5}/>
       </div>
     );
   }
 });
 
 App.start = function () {
-    React.render(<App/>, document.body);
+    React.render(<App/>, document.getElementById('content'));
 };
 
 module.exports = window.App = App;
