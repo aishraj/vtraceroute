@@ -17,8 +17,8 @@ var App = React.createClass({
     return (
       <div className="container">
         <MapboxMap
-          mapId="mapbox.comic"
-          zoomControl={false}
+          mapId="mapbox.streets"
+          zoomControl={true}
           center={[59.907433, 30.299848]} zoom={17}/>
       </div>
     );

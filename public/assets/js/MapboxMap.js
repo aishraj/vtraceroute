@@ -8,6 +8,7 @@ var MapboxMap = React.createClass({
     var mapId = props.mapId || props.src || "mapbox.streets";
 
     var options = {};
+    options['accessToken'] = 'pk.eyJ1IjoiYXJkYWhhbCIsImEiOiJseFQyTWlrIn0.zX_ANNp_k20-iC-6VmbilA'
     var ownProps = ['mapId', 'onMapCreated'];
     for (var k in props) {
       if (props.hasOwnProperty(k) && ownProps.indexOf(k) === -1) {
