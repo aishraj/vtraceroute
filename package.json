@@ -1,0 +1,26 @@
+{
+  "name": "traceserver",
+  "version": "0.0.0",
+  "description": "Frontend components for visual traceroute",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:aishraj/tserver.git"
+  },
+  "author": "Aishraj Dahal",
+  "license": "MIT License",
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "gulp": "~3.8.9",
+    "gulp-browserify": "~0.5.0",
+    "gulp-concat": "~2.4.1",
+    "gulp-imagemin": "~1.2.1",
+    "jquery": "~2.1.4",
+    "react": "^0.13.3",
+    "del": "~1.2.0",
+    "react-mapboxmap": "~0.0.2"
+  }
+}
