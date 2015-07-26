@@ -14,12 +14,39 @@ var App = React.createClass({
      *   https://www.mapbox.com/mapbox.js/api/v2.1.6/l-map-class/
      *   for more info.
      */
+     var onMapCreated = function(map, L) {
+       var polyline = L.polyline([]).addTo(map);
+       var pointsAdded = 0;
+       var add = function() {
+
+          // `addLatLng` takes a new latLng coordinate and puts it at the end of the
+          // line. You optionally pull points from your data or generate them. Here
+          // we make a sine wave with some math.
+          polyline.addLatLng(
+              L.latLng(
+                  Math.cos(pointsAdded / 20) * 30,
+                  pointsAdded));
+          console.log("adding stuff");
+          // Pan the map along with where the line is being added.
+          map.setView([0, pointsAdded], 3);
+
+          // Continue to draw and pan the map by calling `add()`
+          // until `pointsAdded` reaches 360.
+          if (++pointsAdded < 360) window.setTimeout(add, 100);
+        };
+        add()
+     };
+
+
+
+
     return (
       <div className="container">
         <MapboxMap
           mapId="mapbox.streets"
+          onMapCreated={onMapCreated}
           zoomControl={true}
-          center={[27.7000, 85.3333]} zoom={5}/>
+          center={[0, 0]} zoom={3}/>
       </div>
     );
   }
