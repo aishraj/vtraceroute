@@ -33,7 +33,7 @@ var App = React.createClass({
           // Continue to draw and pan the map by calling `add()`
           // until `pointsAdded` reaches 360.
           if (++pointsAdded < 360) window.setTimeout( function() {
-            add(that)
+            add(that);
           }, 100);
         };
         add(this);
