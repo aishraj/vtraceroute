@@ -9,7 +9,7 @@ var App = React.createClass({
           url="/api/v1/places.json"
           accessToken="pk.eyJ1IjoiYXJkYWhhbCIsImEiOiJseFQyTWlrIn0.zX_ANNp_k20-iC-6VmbilA"
           zoomControl={true}
-          pollInterval={1500}
+          pollInterval={25}
           center={[0, 0]} zoom={4}/>
       </div>
     );

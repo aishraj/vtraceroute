@@ -7,12 +7,11 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"time"
 )
 
 type coordindate struct {
-	X int `json:"x"`
-	Y int `json:"y"`
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
 }
 
 const locationFile = "places.json"
@@ -23,28 +22,28 @@ func main() {
 	http.HandleFunc("/api/v1/places.json", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, locationFile)
 	})
-	ticker := time.NewTicker(1 * time.Second)
-	quit := make(chan struct{})
+
+	log.Println("Starting traceroute....")
+	ipHop := make(chan string)
+	traceEnd := make(chan bool)
+	go routetrace(ipHop, traceEnd)
 	go func() {
 		for {
 			select {
-			case <-ticker.C:
-				log.Println("Trying to update JSON in file....")
-				location := generateCoordinates()
-				log.Println("New location is :", location)
-				_, err := updateJSON(location, locationFile)
-				if err != nil {
-					log.Panic("Unable to write data to the file")
-				}
-			case <-quit:
-				ticker.Stop()
+			case <-traceEnd:
+				log.Println("Done with lookup up the ip address")
 				return
+			case nodeString := <-ipHop:
+				log.Println("Got IP as ", nodeString)
+				x, y := lookupIP(nodeString)
+				location := coordindate{X: x, Y: y}
+				updateJSON(location, locationFile)
 			}
 		}
 	}()
+
 	log.Println("Listening on port 4000....")
 	http.ListenAndServe(":4000", nil)
-
 }
 
 //generateCoordinates generates two numbers x and y between -90,+90
@@ -59,7 +58,7 @@ func generateCoordinates() coordindate {
 	if ySign < 1 {
 		randomInty = randomInty * (-1)
 	}
-	return coordindate{X: randomIntx, Y: randomInty}
+	return coordindate{X: float64(randomIntx), Y: float64(randomInty)}
 }
 
 func updateJSON(location coordindate, filepath string) (bool, error) {
