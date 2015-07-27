@@ -9,7 +9,7 @@ var MapboxMap = React.createClass({
 
     var options = {};
     options['accessToken'] = 'pk.eyJ1IjoiYXJkYWhhbCIsImEiOiJseFQyTWlrIn0.zX_ANNp_k20-iC-6VmbilA'
-    var ownProps = ['mapId', 'onMapCreated'];
+    var ownProps = ['mapId', 'onMapCreated', 'dataUrl'];
     for (var k in props) {
       if (props.hasOwnProperty(k) && ownProps.indexOf(k) === -1) {
         options[k] = props[k];
@@ -17,9 +17,10 @@ var MapboxMap = React.createClass({
     }
 
     var map = L.mapbox.map(this.getDOMNode(), mapId, options);
+    var dataUrl = this.props.dataUrl;
 
     if (this.props.onMapCreated) {
-      this.props.onMapCreated(map, L);
+      this.props.onMapCreated(map, L, dataUrl);
     }
   },
 
