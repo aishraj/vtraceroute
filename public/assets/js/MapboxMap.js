@@ -1,6 +1,7 @@
+//Based on https://github.com/iamale/MapboxMap
 var React = require('react'),
+_ = require('lodash'),
 $ = require('jquery');
-// Assuming Mapbox/Leaflet is already exposed as `L`
 
 var MapboxMap = React.createClass({
   loadCoordinatesFromServer: function(map, L) {
@@ -14,11 +15,13 @@ var MapboxMap = React.createClass({
           polyline.addLatLng(L.latLng(coordinate.x,coordinate.y));
           this.setState({polyline: polyline });
         }
-        this.setState({coordinate: coordinate});
-        if (!$.isEmptyObject(this.state.polyline)) {
-          this.state.polyline.addLatLng(L.latLng(this.state.coordinate.x,this.state.coordinate.y));
+        if (!_.isEqual(this.state.coordinate, coordinate)) {
+          this.setState({coordinate: coordinate});
+          if (!$.isEmptyObject(this.state.polyline)) {
+            this.state.polyline.addLatLng(L.latLng(this.state.coordinate.x,this.state.coordinate.y));
+          }
+          map.setView([coordinate.x,coordinate.y], 3);
         }
-        map.setView([coordinate.x,coordinate.y], 3);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
