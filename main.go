@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"sync"
 )
 
 type coordindate struct {
@@ -15,6 +16,8 @@ type coordindate struct {
 }
 
 const locationFile = "places.json"
+
+var locationMutex = new(sync.Mutex)
 
 func main() {
 	fs := http.FileServer(http.Dir("public"))
@@ -31,7 +34,7 @@ func main() {
 		for {
 			select {
 			case <-traceEnd:
-				log.Println("Done with lookup up the ip address")
+				log.Println("Done with lookup of the ip address")
 				return
 			case nodeString := <-ipHop:
 				log.Println("Got IP as ", nodeString)
@@ -62,12 +65,30 @@ func generateCoordinates() coordindate {
 }
 
 func updateJSON(location coordindate, filepath string) (bool, error) {
+	if ((location.X - 0.0) < 0.00001) && ((location.Y - 0.0) < 0.00001) {
+		return true, nil //we didn't get valid location (yes, i'm assuming nobody lives near 0,0 or no server is there)
+	}
+	locationMutex.Lock()
+	defer locationMutex.Unlock()
 	// Stat the file, so we can find its current permissions
 	fi, err := os.Stat(filepath)
 	if err != nil {
 		return false, err
 	}
-	locationData, err := json.MarshalIndent(location, "", "    ")
+
+	fileData, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return false, err
+	}
+
+	var coordindates []coordindate
+	if err := json.Unmarshal(fileData, &coordindates); err != nil {
+		return false, err
+	}
+
+	coordindates = append(coordindates, location)
+
+	locationData, err := json.MarshalIndent(coordindates, "", "    ")
 	if err != nil {
 		return false, err
 	}

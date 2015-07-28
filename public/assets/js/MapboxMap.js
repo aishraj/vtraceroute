@@ -9,18 +9,17 @@ var MapboxMap = React.createClass({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      success: function(coordinate) {
-        if (this.state.coordinate.x === 0 && this.state.coordinate.y === 0 && $.isEmptyObject(this.state.polyline)) {
-          var polyline  = L.polyline([]).addTo(map);
-          polyline.addLatLng(L.latLng(coordinate.x,coordinate.y));
-          this.setState({polyline: polyline });
-        }
-        if (!_.isEqual(this.state.coordinate, coordinate)) {
-          this.setState({coordinate: coordinate});
-          if (!$.isEmptyObject(this.state.polyline)) {
-            this.state.polyline.addLatLng(L.latLng(this.state.coordinate.x,this.state.coordinate.y));
+      success: function(coordinates) {
+        if (coordinates.length > 0) {
+          coordinates = coordinates.map(function(coordinate) {
+            return L.latLng(coordinate.x, coordinate.y);
+          });
+          if ($.isEmptyObject(this.state.polyline)) {
+            var polyline  = L.polyline([]).addTo(map);
+            this.setState({polyline: polyline });
           }
-          map.setView([coordinate.x,coordinate.y], 3);
+          this.state.polyline.setLatLngs(coordinates);
+          map.setView([coordinates[coordinates.length -1].lat,coordinates[coordinates.length -1].lng], 3);
         }
       }.bind(this),
       error: function(xhr, status, err) {
@@ -29,7 +28,7 @@ var MapboxMap = React.createClass({
     });
   },
   getInitialState: function() {
-    return {coordinate: {x: 0, y:0}, polyline: {}};
+    return {coordinates: [], polyline: {}};
   },
   componentDidMount: function(argument) {
     var props = this.props;
