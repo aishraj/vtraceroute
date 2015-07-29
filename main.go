@@ -20,6 +20,19 @@ const locationFile = "places.json"
 var locationMutex = new(sync.Mutex)
 
 func main() {
+	fi, err := os.Stat(locationFile)
+	if err != nil {
+		log.Panic("Unable to stat the file. Aborting....")
+	}
+	var dummy []int
+	emptyData, err := json.Marshal(dummy)
+	if err != nil {
+		log.Panic("Unable to marshalle empty json array. Aborting....")
+	}
+	_, err = writeTofile(fi, emptyData)
+	if err != nil {
+		log.Panic("Unable to write empty json array to file. Aborting....")
+	}
 	fs := http.FileServer(http.Dir("public"))
 	http.Handle("/", fs)
 	http.HandleFunc("/api/v1/places.json", func(w http.ResponseWriter, r *http.Request) {
@@ -92,7 +105,15 @@ func updateJSON(location coordindate, filepath string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	err = ioutil.WriteFile(filepath, locationData, fi.Mode())
+	_, err = writeTofile(fi, locationData)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func writeTofile(fi os.FileInfo, data []byte) (bool, error) {
+	err := ioutil.WriteFile(locationFile, data, fi.Mode())
 	if err != nil {
 		return false, err
 	}
