@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -20,6 +21,7 @@ const locationFile = "places.json"
 var locationMutex = new(sync.Mutex)
 
 func main() {
+	hostnameIpPntr := flag.String("hostIp", "www.google.com", "A hostname or an IP address that you want to traceroute to.")
 	fi, err := os.Stat(locationFile)
 	if err != nil {
 		log.Panic("Unable to stat the file. Aborting....")
@@ -42,7 +44,7 @@ func main() {
 	log.Println("Starting traceroute....")
 	ipHop := make(chan string)
 	traceEnd := make(chan bool)
-	go routetrace(ipHop, traceEnd)
+	go routetrace(*hostnameIpPntr, ipHop, traceEnd)
 	go func() {
 		for {
 			select {
