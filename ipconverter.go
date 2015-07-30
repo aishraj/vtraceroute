@@ -24,7 +24,6 @@ type customQuery struct {
 func lookupIP(ip string) (float64, float64) {
 	updateInterval := 7 * 24 * time.Hour // week
 	maxRetryInterval := time.Hour
-	log.Println("Downloading the geoIP lookup file. This may take a while depending on your connection spped.")
 	db, err := freegeoip.OpenURL(maxmindFile, updateInterval, maxRetryInterval)
 	if err != nil {
 		log.Fatal(err)
