@@ -19,6 +19,9 @@ First install `npm` and `go` programming language SDK. Once you've got it setup 
 #Disclaimer
 This is my first react.js project and hence the quality of the JS (and JSX) code might be mediocre at best. In case you feel that things can be improved, go ahead and send a pull request.
 
+#Sample
+![Example on running traceroute with facebook.com from my EC2 machine in North Virigina](http://i.imgur.com/Jx2kChl.png?1)
+
 #TODO
 1. Make paths traceable in terms of direction.
 2. Figure out if the React DOM is having any benefit (since leaflet.js renders the map component)
