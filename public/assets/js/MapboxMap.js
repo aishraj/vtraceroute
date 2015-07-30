@@ -19,7 +19,7 @@ var MapboxMap = React.createClass({
             this.setState({polyline: polyline });
           }
           this.state.polyline.setLatLngs(coordinates);
-          map.setView([coordinates[coordinates.length -1].lat,coordinates[coordinates.length -1].lng], 3);
+          //map.setView([coordinates[coordinates.length -1].lat,coordinates[coordinates.length -1].lng], 3);
         }
       }.bind(this),
       error: function(xhr, status, err) {
