@@ -40,5 +40,6 @@ func lookupIP(ip string) (float64, float64) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Approximate location is %v, %v\n", result.Location.Latitude, result.Location.Longitude)
 	return result.Location.Latitude, result.Location.Longitude
 }
