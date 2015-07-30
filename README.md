@@ -8,6 +8,7 @@ Tools used:
 
 #Getting started
 First install `npm` and `go` programming language SDK. Once you've got it setup perform the following in sequence:
+
 1. `go get github.com/aishraj/vtracerroute`
 2. `cd $GOPATH/src/github.com/aishraj/vtracerroute`
 3. `npm install`
