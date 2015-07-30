@@ -21,7 +21,8 @@ const locationFile = "places.json"
 var locationMutex = new(sync.Mutex)
 
 func main() {
-	hostnameIpPntr := flag.String("hostIp", "www.google.com", "A hostname or an IP address that you want to traceroute to.")
+	hostnameIpPntr := flag.String("host", "www.google.com", "A hostname or an IP address that you want to traceroute to.")
+	flag.Parse()
 	fi, err := os.Stat(locationFile)
 	if err != nil {
 		log.Panic("Unable to stat the file. Aborting....")
